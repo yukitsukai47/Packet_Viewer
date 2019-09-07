@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>Packet Viewer</title>
+  </head>
+  <body bgcolor="#ffffff">
+    
+    <style>
+      table {
+	  border-collapse: collapse;
+      }
+      td {
+	  border: solid 1px;
+	  padding: 0.5em;
+      }
+    </style>
+    
+    <h1>Packet Viewer</h1>
+    
+    </form>
+    
+	 <form name="js">
+パケットデータ(16進)：<input type="text" name="txtb" value="" id="packet">
+<input type="button" value="表示" onclick="tbox()">
+<input type="button" value="消去" onclick="clr()"><br>
+<form name="test">
+<input name="myfile" type="file" id="self">
+</form>
+
+<script>
+var form = document.getElementById("self");
+
+form.addEventListener('change',function(evt){ 
+  var result = evt.target.files; 
+  var reader = new FileReader();
+  reader.readAsText(result[0]);
+  reader.onload=function(ev){
+    document.js.txtb.value = reader.result.split("/n");
+  }
+},false);    
+</script>
+    
+    
+    
+    <p>ヘッダ表示</p>
+    <p>入力例)</p>
+    <p>(IPv4)45000034000040000111D906C0A80001E0000009020802080020983C0202000000020000C0A80100FFFFFF000000000000000001</p>
+    <p>(IPv6)6000000000283a80fe80000000000000907a049d0b9b0895fe80000000000000080027fffe0000008000008a000100256162636465666768696a6b6c6d6e6f7071727374757677616263646566676869</p>
+    <!--IPv4用のテーブル-->
+
+    <table>
+      
+<tr>IPv4</tr>
+
+<tr bgcolor="ff4f50">
+  <td colspan="4" align="center">------32bit------</td>
+</tr>
+
+<tr bgcolor="00ecff">
+    <td align="center">バージョン(4)</td>
+    <td align="center">ヘッダ長(4)</td>
+    <td align="center">サービスタイプ(8)</td>
+    <td align="center">パケット長(16)</td>
+</tr>
+</thead>
+
+<tr bgcolor="fffff0">
+    <td align="center" id="version_v4"></td>
+    <td align="center" id="ihl"></td>
+    <td align="center" id="tos"></td>
+    <td align="center" id="totallength"></td>
+   </tr>
+</thead>
+
+<tr bgcolor="00ecff">
+  <td colspan="3" align="center">識別子(16)</td>
+  <td align="center">フラグ(16)</td>
+</tr>
+<tr bgcolor="fffff0">
+  <td colspan="3" align="center" id="identification"></td>
+  <td align="center" id="vcf"></td>
+</tr>
+
+
+<tr bgcolor="00ecff">
+  <td colspan="2" align="center">TTL(8)</td>
+  <td align="center">プロトコル番号(8)</td>
+  <td align="center"> ヘッダチェックサム(16)</td>
+</tr>
+<tr bgcolor="fffff0">
+  <td colspan="2" align="center" id="ttl_final"></td>
+  <td align="center" id="protocol_final"></td>
+  <td align="center" id="hc"></td>
+</tr>
+  
+
+<tr bgcolor="00ff00">
+  <td colspan="4" align="center">送信元IPアドレス(32)</td>
+</tr>
+<tr bgcolor="fffff0">
+  <td colspan="4" align="center" id="sa_final_v4"></td>
+</tr>
+  
+
+<tr bgcolor="00ff00">
+  <td colspan="4" align="center">宛先IPアドレス(32)</td>
+</tr>
+<tr bgcolor="fffff0">
+  <td colspan="4" align="center" id="da_final_v4"></td>
+</tr>
+
+
+<tr bgcolor="ff773e">
+  <td colspan="4" align="center">オプション(32 * n)</td>
+</tr>
+<tr bgcolor="fffff0">
+  <td colspan="4" align="center" id="option"></td>
+</tr>
+
+
+<tr bgcolor="ff69a3">
+  <td colspan="4" align="center">データ本体</td>
+</tr>
+<tr bgcolor="fffff0">
+  <td colspan="4" align="center" id="data_v4"></td>
+</tr>
+
+</table>
+
+
+<!--IPv6用のテーブル-->
+
+
+
+<table>
+  
+  <tr>IPv6</tr>
+
+  <tr bgcolor="ff4f50">
+    <td colspan="4" align="center">------64bit------</td>
+  </tr>
+  
+  <tr bgcolor="00ecff">
+      <td align="center">バージョン(4)</td>
+      <td align="center">トラフィッククラス(8)</td>
+      <td colspan="2" align="center">フローラベル(20)</td>
+  </tr>
+  </thead>
+  <tr bgcolor="fffff0">
+      <td align="center" id="version_v6"></td>
+      <td align="center" id="tc"></td>
+      <td td colspan="2" align="center" id="fl"></td>
+     </tr>
+  </thead>
+  
+
+  <tr bgcolor="00ecff">
+    <td colspan="2" align="center">ペイロード長(16)</td>
+    <td align="center">ネクストヘッダ(8)</td>
+    <td align="center">ホップリミット(8)</td>
+  </tr>
+  <tr bgcolor="fffff0">
+    <td colspan="2" align="center" id="payload"></td>
+    <td align="center" id="nh_final"></td>
+    <td align="center" id="hl_final"></td>
+  </tr>
+    
+  
+  <tr bgcolor="00ff00">
+    <td colspan="4" align="center">送信元IPアドレス(128)</td>
+  </tr>
+  <tr bgcolor="fffff0">
+    <td colspan="4" align="center" id="sa_final_v6"></td>
+  </tr>
+    
+  
+  <tr bgcolor="00ff00">
+    <td colspan="4" align="center">宛先IPアドレス(128)</td>
+  </tr>
+  <tr bgcolor="fffff0">
+    <td colspan="4" align="center" id="da_final_v6"></td>
+  </tr>
+  
+  
+  
+  <tr bgcolor="ff69a3">
+    <td colspan="4" align="center">データ本体</td>
+  </tr>
+  <tr bgcolor="fffff0">
+    <td colspan="4" align="center" id="data_v6"></td>
+  </tr>
+
+
+  </table>
+<script type="text/javascript" src="Packet_Viewer.js"></script>
+</body>
+</html>
