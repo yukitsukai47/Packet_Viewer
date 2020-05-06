@@ -23,6 +23,5 @@ It is also possible to analyze files captured by Wireshark and so on.
 In this case, please select the captured file from the file selection.
 Some capture files are provided as examples. (Windows packets, Linux packets)
 
-Translated with www.DeepL.com/Translator (free version)
 
 ![PacketViewer](https://user-images.githubusercontent.com/52772923/64474875-dbe4c700-d1b5-11e9-9b61-5d49b518c61a.png)
